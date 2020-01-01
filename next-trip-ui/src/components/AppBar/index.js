@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 
 // Importing Common utils file
-import logo from '../../utils/images/train.png';
+import logo from '../../utils/images/bus_2.jpeg';
 import './style.css';
 
 class NavBar extends Component {
@@ -26,7 +26,7 @@ class NavBar extends Component {
         /*---- Top Nav Bar with the Logo, Title and Links -----*/
         <AppBar position="sticky" color='default'>
           <Toolbar>
-            <Container>
+            <Container maxWidth='xl'>
               <Grid
                 container
                 direction="row"
