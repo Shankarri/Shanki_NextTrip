@@ -1,0 +1,26 @@
+.departureCard 
+{
+    background-color: #f5f5f5 !important;
+}
+
+.departureDetailsCard
+{
+    margin: 1rem;
+    background-color: white;
+}
+
+.departureDetailsCard div
+{
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.departureCard  .MuiCardHeader-title 
+{
+    font-size: 2rem;
+}
+.departureCard .MuiCardHeader-root,
+.departureCard .MuiCardHeader-subheader
+{
+    padding-bottom:0rem;
+    color: black;
+}

@@ -4,14 +4,15 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 // Importing HTML Elements from Material UI
-import { Grid, Container } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 
-import NavBar from './components/AppBar';
-import DropDownContent from './components/DropDownContent';
+import NavBar           from './components/AppBar';
+import DepartureDetails from './components/DepatureDetails';
+import DropDownContent  from './components/DropDownContent';
 
-import * as c from './utils/api/constants';
+import * as c       from './utils/constants';
+import * as sample  from './utils/sampleJson';
 import './App.css';
-
 
 class App extends Component {
 
@@ -20,14 +21,14 @@ class App extends Component {
     routesDetails: [],
     directionDetails: [],
     stopDetails: [],
-    departuresDetails:[],
+    departuresDetails:{},
     selectedRoute: '0',
     selectedDirection: '0',
     selectedStop: '0',
   }
 
   componentDidMount = () => {
-    fetch('/Routes',
+    fetch('/'+c.DROP_DOWN_HEADER_ROUTES.toLowerCase(),
       {
         headers: new Headers({ 'Accept': 'application/json' })
       })
@@ -42,7 +43,7 @@ class App extends Component {
   }
 
   handleDropDownChange = (event) => {
-    
+
     console.log('name', event.target.name);
     let dropdownName = event.target.name;
     let dropdownValue = event.target.value;
@@ -50,11 +51,11 @@ class App extends Component {
 
     if (dropdownName === c.DROP_DOWN_HEADER_ROUTES) {
       this.setState({ selectedRoute: dropdownValue });
-      requestUrl = '/'+ c.DROP_DOWN_HEADER_DIRECTIONS+ '/' + dropdownValue;
+      requestUrl = '/'+ c.DROP_DOWN_HEADER_DIRECTIONS.toLowerCase()+ '/' + dropdownValue;
     }
     else if (dropdownName === c.DROP_DOWN_HEADER_DIRECTIONS) {
       this.setState({ selectedDirection: dropdownValue });
-      requestUrl = '/'+ c.DROP_DOWN_HEADER_STOPS + '/'  + this.state.selectedRoute + '/' + dropdownValue;
+      requestUrl = '/'+ c.DROP_DOWN_HEADER_STOPS.toLowerCase() + '/'  + this.state.selectedRoute + '/' + dropdownValue;
     }
 
     else if (dropdownName === c.DROP_DOWN_HEADER_STOPS) {
@@ -70,7 +71,6 @@ class App extends Component {
       .then(text => {
         let responseJson = JSON.parse(text);
         
-
         if (dropdownName === c.DROP_DOWN_HEADER_ROUTES)
           this.setState({ directionDetails: responseJson });
         else if (dropdownName === c.DROP_DOWN_HEADER_DIRECTIONS) 
@@ -90,6 +90,7 @@ class App extends Component {
             routesDetails,
             directionDetails,
             stopDetails,
+            departuresDetails,
             selectedRoute,
             selectedDirection,
             selectedStop,
@@ -101,36 +102,41 @@ class App extends Component {
 
         <div className='imageSection'></div>
 
-        <Container maxWidth='sm'>
-          <Grid
-            container
-            direction="column"
-            justify="center"
-            alignItems="stretch"
-          >
-            <DropDownContent header={c.DROP_DOWN_HEADER_ROUTES}
-                              selectedValue={selectedRoute} 
-                              selectedDetails={routesDetails}
-                              handleDropDownChange={this.handleDropDownChange}
-            />
-            {selectedRoute !== '0' && 
-              directionDetails.length >0 &&
-              <DropDownContent header={c.DROP_DOWN_HEADER_DIRECTIONS}
-                              selectedValue={selectedDirection} 
-                              selectedDetails={directionDetails}
-                              handleDropDownChange={this.handleDropDownChange}
-            />
-            }
-            {selectedDirection !== '0' && 
-              stopDetails.length >0 &&
+        <Container maxWidth='sm' className='mainContent'>
+
+          <DropDownContent header={c.DROP_DOWN_HEADER_ROUTES}
+                            selectedValue={selectedRoute} 
+                            selectedDetails={routesDetails}
+                            handleDropDownChange={this.handleDropDownChange}
+          />
+
+          {selectedRoute !== '0' && 
+            directionDetails.length >0 &&
+            <DropDownContent header={c.DROP_DOWN_HEADER_DIRECTIONS}
+                            selectedValue={selectedDirection} 
+                            selectedDetails={directionDetails}
+                            handleDropDownChange={this.handleDropDownChange}
+          />
+          }
+
+          {selectedDirection !== '0' && 
+            stopDetails.length >0 &&
               <DropDownContent header={c.DROP_DOWN_HEADER_STOPS}
                               selectedValue={selectedStop} 
                               selectedDetails={stopDetails}
                               handleDropDownChange={this.handleDropDownChange}
             />
-             }
-          </Grid>
-        </Container>
+          }
+
+          </Container>
+            
+          <Container maxWidth='md' className='mainContent'>
+          { Object.keys(departuresDetails).length >0 &&
+            // <DepartureDetails departuresDetails={sample.sampleDepartureDetails}/>
+            <DepartureDetails departuresDetails={departuresDetails}/>
+          }
+          </Container>
+        
 
       </Router>
     );

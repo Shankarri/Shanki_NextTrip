@@ -4,10 +4,14 @@
 
 .imageSection
 {
-  background-image: url('./utils/images/bus_stop.jpg') !important;
-  height:33vh;
-  background-repeat: no-repeat;
-  background-attachment: fixed;  
+  background-image: url('./images/bus_1.png') !important;
+  height:20vh;
   background-size: cover;
-  /* background-position: 100%; */
+  background-position: 90%;
+  background-repeat: no-repeat;
+}
+
+.mainContent
+{
+  padding-bottom: 2rem;
 }

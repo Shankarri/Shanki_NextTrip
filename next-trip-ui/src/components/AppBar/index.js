@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 
 // Importing HTML Elements from Material UI
 import {
-  Grid,
+  Grid, Chip,Icon,
   AppBar, Toolbar,
   Typography, Avatar, Container,
 } from '@material-ui/core';
 
 // Importing Common utils file
-import logo from '../../utils/images/bus_2.jpeg';
-import './style.css';
+import logo from '../../images/bus_2.jpeg'
 
 class NavBar extends Component {
 
@@ -52,7 +51,7 @@ class NavBar extends Component {
                 {/* Navigation Links displayed in the  Top Nav Bar*/}
                 <Grid item xs={4}>
 
-                  <Typography variant="h6" noWrap align='right' className='welcomeMsg'>Welcome !
+                  <Typography noWrap align='right' variant='h6'> Welcome !
                     </Typography>
                 </Grid>
 
