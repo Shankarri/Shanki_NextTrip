@@ -12,6 +12,7 @@ import DropDownContent  from './components/DropDownContent';
 
 import * as c       from './utils/constants';
 import * as sample  from './utils/sampleJson';
+
 import './App.css';
 
 class App extends Component {
@@ -25,21 +26,11 @@ class App extends Component {
     selectedRoute: '0',
     selectedDirection: '0',
     selectedStop: '0',
+    departureRefreshIntervalId : 0
   }
 
   componentDidMount = () => {
-    fetch('/'+c.DROP_DOWN_HEADER_ROUTES.toLowerCase(),
-      {
-        headers: new Headers({ 'Accept': 'application/json' })
-      })
-      .then(res => res.text())          // convert to plain text
-      .then(text => {
-        this.setState({ routesDetails: JSON.parse(text) });
-      })
-      .catch(err => {
-        c.APIErrorResponse(err, 'Get Routes');
-      });
-
+    this.getDropdownData('/'+c.DROP_DOWN_HEADER_ROUTES.toLowerCase(),'');
   }
 
   handleDropDownChange = (event) => {
@@ -50,19 +41,47 @@ class App extends Component {
     let requestUrl = '';
 
     if (dropdownName === c.DROP_DOWN_HEADER_ROUTES) {
+
       this.setState({ selectedRoute: dropdownValue });
+      
       requestUrl = '/'+ c.DROP_DOWN_HEADER_DIRECTIONS.toLowerCase()+ '/' + dropdownValue;
+
+      this.getDropdownData(requestUrl,dropdownName);
     }
     else if (dropdownName === c.DROP_DOWN_HEADER_DIRECTIONS) {
+
       this.setState({ selectedDirection: dropdownValue });
+      
       requestUrl = '/'+ c.DROP_DOWN_HEADER_STOPS.toLowerCase() + '/'  + this.state.selectedRoute + '/' + dropdownValue;
+      
+      this.getDropdownData(requestUrl,dropdownName);
     }
 
     else if (dropdownName === c.DROP_DOWN_HEADER_STOPS) {
-      this.setState({ selectedStop: dropdownValue });
-      requestUrl = '/'+this.state.selectedRoute+ '/'  + this.state.selectedDirection + '/' + dropdownValue;
-    }
 
+      this.setState({ selectedStop: dropdownValue });
+      
+      requestUrl = '/'+this.state.selectedRoute+ '/'  + this.state.selectedDirection + '/' + dropdownValue;
+      
+      var _this =this;
+      this.getDropdownData(requestUrl,dropdownName);
+      
+      clearInterval(_this.state.departureRefreshIntervalId);
+
+      var interval =  setInterval(function(){ 
+
+      // let requestUrl = '/'+ _this.state.selectedRoute+ '/'  + _this.state.selectedDirection + '/' + _this.state.selectedStop;    
+      
+      _this.getDropdownData(requestUrl,c.DROP_DOWN_HEADER_STOPS); }, 30000);
+      
+      this.setState({departureRefreshIntervalId : interval});
+    }
+    
+    
+  }
+
+  getDropdownData = (requestUrl,dropdownName) =>
+  {
     fetch(requestUrl,
       {
         headers: new Headers({ 'Accept': 'application/json' })
@@ -70,13 +89,18 @@ class App extends Component {
       .then(res => res.text())          // convert to plain text
       .then(text => {
         let responseJson = JSON.parse(text);
+          
+        if (dropdownName === '')
+          this.setState({ routesDetails: responseJson });
         
         if (dropdownName === c.DROP_DOWN_HEADER_ROUTES)
           this.setState({ directionDetails: responseJson });
+
         else if (dropdownName === c.DROP_DOWN_HEADER_DIRECTIONS) 
           this.setState({ stopDetails: responseJson });
+
         else if (dropdownName === c.DROP_DOWN_HEADER_STOPS)
-        this.setState({ departuresDetails: responseJson });
+          this.setState({ departuresDetails: responseJson });
       })
       .catch(err => {
         c.APIErrorResponse(err, 'Get DropDown List for ', dropdownName);

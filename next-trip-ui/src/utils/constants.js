@@ -3,18 +3,6 @@ export const DROP_DOWN_HEADER_ROUTES = 'Routes';
 export const DROP_DOWN_HEADER_DIRECTIONS = 'Directions';
 export const DROP_DOWN_HEADER_STOPS = 'Stops';
 
-
-
-export const getCurrentTime = () =>
-{
-    let currentHour = (new Date().getHours() >12 ? new Date().getHours()-12 : new Date().getHours());
-    let currentMin  = new Date().getMinutes();
-    let currentAMorPM = (new Date().getHours() >12 ? 'pm' : 'am');
-    let currentTime = ' ' + currentHour + ' : '+ currentMin +' '+ currentAMorPM ;
-    return currentTime;
-}
-
-
 /*---- Error Response for all the HTTP Request --- */
 export const APIErrorResponse = (error, ReqDetails) => {
     // Error

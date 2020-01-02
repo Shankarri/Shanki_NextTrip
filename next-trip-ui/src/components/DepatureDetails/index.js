@@ -37,8 +37,8 @@ class DepartureDetails extends Component {
                         
                         <Chip variant="outlined"
                                 color="primary" 
-                                avatar={<Avatar><Icon >watch_later</Icon></Avatar>}
-                                label={<h3>{c.getCurrentTime()}</h3>} 
+                                avatar={<Avatar> <Icon >watch_later</Icon> </Avatar>}
+                                label={<h3>{new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}).split(':').join(' : ')}</h3>} 
                         />
                     
                     </Grid>
