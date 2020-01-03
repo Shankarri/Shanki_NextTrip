@@ -48,7 +48,7 @@ class NavBar extends Component {
 
                 </Grid>
 
-                {/* Navigation Links displayed in the  Top Nav Bar*/}
+                {/* Welcome Message displayed in the  Top Nav Bar*/}
                 <Hidden smDown>
                 <Grid item xs={2}>
                 

@@ -1,7 +1,9 @@
+/*--------- Some of the common CSS used in Home Page --------*/
 .App {
   text-align: center;
 }
 
+/* Home Page image Section styles */
 .imageSection
 {
   background-image: url('./images/bus_5.jpg') !important;
@@ -11,20 +13,22 @@
   background-repeat: no-repeat;
 }
 
+/* MainContent of the Page */
 .mainContent
 {
   padding-bottom: 2rem;
   box-shadow: lightgrey;
 }
 
-/* Css for File Result Section with Tabs */
+/*----------------------------------------------------------*/
+
+/*------------ Css for differnt Pages Tab links  ----------*/
 .pageTabs
 {
  position: sticky;
  border-radius: 5px;
  padding-top: 2rem;
 }
-
 
 .pageTabs .active
 {
@@ -41,11 +45,13 @@
     cursor: pointer;
     margin: 0;
     color: black;
-    background-color: lightgray;
+    border: 1px solid grey;
+    /* background-color: lightgray; */
 }
 .pageTabs .inactive:hover
 {
-    border: 1px solid grey;
+    /* border: 1px solid grey; */
+    background-color: #d3d3d352;
     font-weight: bold;
     color: #0061aa;
 }
@@ -60,6 +66,4 @@
     text-decoration: none !important;
 }
 
-
-
-/* -------------------------- */
+/* ----------------------------------------------------- */

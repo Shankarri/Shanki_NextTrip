@@ -6,13 +6,12 @@ import { Container,
         CircularProgress
  } from '@material-ui/core';
 
+// Importing Common Components
 import DepartureDetails from '../../components/DepatureDetails';
 import DropDownContent  from '../../components/DropDownContent';
 
+// Importing constants file
 import * as c       from '../../utils/constants';
-import * as sample  from '../../utils/sampleJson';
-
-import './style.css';
 
 class DepartureByRoute extends Component {
 
@@ -29,26 +28,35 @@ class DepartureByRoute extends Component {
     routeDepartureReqStatus : c.REQUEST_STATUS_INITIAL,
   }
 
+  /* Once the page is loaded and the component is mounted, 
+     get route details from API and load the dropdown 
+  */
   componentDidMount = () => {
     
     let requestURL =  c.getAPIRequestURL('','',this.state);
 
     this.getDropdownData( requestURL ,'');
   }
+  /*----------------------------------------------------------*/
 
+  /*---------- handle the dropdown changes in the route page  -----------*/
   handleDropDownChange = (event) => {
     
     let dropdownName = event.target.name;
     let dropdownValue = event.target.value;
 
+    // Clear the existing values and set default before accessing the API
     this.setState({  routeDepartureReqStatus :c.REQUEST_STATUS_INITIAL });
     this.setState({ departuresDetails: {} });
 
+    // Get the API url according to the dropdown selected
     let requestURL = c.getAPIRequestURL(dropdownName,dropdownValue,this.state);
 
+    // If we get a non empty url, then hit the API function
     if(requestURL !== '')
       this.getDropdownData(requestURL,dropdownName);  
 
+    // Now reset the Dropdowns accroding to the user Selected values  
     if (dropdownName === c.HEADER_DIRECTIONS || dropdownName === c.HEADER_ROUTES) 
       {
         this.setState({ stopDetails: [] });
@@ -66,23 +74,24 @@ class DepartureByRoute extends Component {
     else if (dropdownName === c.HEADER_STOPS) {
       this.setState({ selectedStop: dropdownValue });
 
+      //If we receive departure details, then we have set a interval function to fetch real time updates every 30 seconds for the selected criteria
       var _this =this;      
 
       clearInterval(_this.state.routeRefreshIntervalId);
-      var interval =  setInterval(function(){ 
-      _this.getDropdownData(requestURL,c.HEADER_STOPS); }, 30000);
+
+      var interval =  setInterval(function(){ _this.getDropdownData(requestURL,c.HEADER_STOPS); }, 30000);
       
-      this.setState({routeRefreshIntervalId : interval});
-      this.setState({  routeDepartureReqStatus :c.REQUEST_STATUS_LOADING });
+      this.setState({ routeRefreshIntervalId : interval});
+      this.setState({ routeDepartureReqStatus :c.REQUEST_STATUS_LOADING });
     }
-    
-    
+
   }
+  /*----------------------------------------------------------*/
+
+  /*-------- API for getting the Reponse based on the Request -------------*/
 
   getDropdownData = (requestUrl,dropdownName) =>
   {
-    
-
     fetch(requestUrl,
       {
         headers: new Headers({ 'Accept': 'application/json' })
@@ -94,7 +103,8 @@ class DepartureByRoute extends Component {
       ) 
       .then(text => {
         let responseJson = JSON.parse(text);
-          
+        
+        // Depending upon the Dropdown selected, asssign the values to repective states
         if (dropdownName === '')
           this.setState({ routesDetails: responseJson });
         
@@ -110,11 +120,14 @@ class DepartureByRoute extends Component {
             this.setState({  routeDepartureReqStatus :c.REQUEST_STATUS_SUCCESS });
         }  
       })
+
       .catch(err => {
         this.setState({  routeDepartureReqStatus :c.REQUEST_STATUS_FAILED });
         c.APIErrorResponse(err, 'Get DropDown List for ', dropdownName);
       });
   }
+
+  /*----------------------------------------------------------*/
 
 
   render() {
@@ -131,8 +144,8 @@ class DepartureByRoute extends Component {
           } = this.state;
 
     return (
-
-<>
+      <>
+      {/*--------------- Main Content section for Search by Stop Page -----------------*/}
         <Container maxWidth='sm' className='mainContent'>
 
           <DropDownContent header={c.HEADER_ROUTES}
@@ -161,31 +174,44 @@ class DepartureByRoute extends Component {
 
           </Container>
             
+          {/* ----------------------------------------------------------------------------- */}
+
+      {/*--------------- Departure Details section for Search by Route Page -----------------*/}
+
         <Container maxWidth='md' className='mainContent'>
 
+        {/* If the page is just loaded without any stop ids then departure section should not be loaded  */}
           {routeDepartureReqStatus !== c.REQUEST_STATUS_INITIAL &&
 
             <Card raised={true} className='departureCard'>
+
               <CardHeader title='Departures' align='center' />
+
 
               {routeDepartureReqStatus === c.REQUEST_STATUS_SUCCESS ?
 
+              /* If API for Searching by stop id is success, then display the respective details in the page  */
                 Object.keys(routeDeparturesDetails).length > 0 &&
                 <DepartureDetails departuresDetails={routeDeparturesDetails} />
 
-                : routeDepartureReqStatus === c.REQUEST_STATUS_FAILED ?
+              /* If API for Searching by stop id is failure, then display error message in the  page  */
+              : routeDepartureReqStatus === c.REQUEST_STATUS_FAILED ?
+              
                   <Card className='departureDetailsCard'>
                     <CardContent align='center'>
                       <h3> Something went wrong. Please refresh the page</h3>
                     </CardContent>
                   </Card>
 
+                  /* If API for Searching by stop id is loading, then display loading image  */
                   : routeDepartureReqStatus === c.REQUEST_STATUS_LOADING &&
-                  <CircularProgress />
+                  <CardContent align='center'> <CircularProgress /> </CardContent>
               }
+              
             </Card>
           }
           </Container>
+          {/* ----------------------------------------------------------------------------- */}
     </>
     );
   }

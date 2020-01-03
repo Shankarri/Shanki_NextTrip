@@ -1,3 +1,4 @@
+// Sample Json Response for the Departure Details for Testing
 export const sampleDepartureDetails = {
     "Stop": {
         "StopId": 931,

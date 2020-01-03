@@ -4,25 +4,25 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link,Redirect } from 'react-router-dom';
 
 // Importing HTML Elements from Material UI
-import {
-        Grid, 
-        Card, CardContent,
-        Button
+import { Grid } from '@material-ui/core';
 
-  } from '@material-ui/core';
-
+// Different Pages and common Components
 import NavBar           from './components/AppBar';
 import DepartureByRoute from './pages/DepartureByRoute';
 import DepartureByStop  from './pages/DepartureByStop';
 
+// Different Utils that is used by the home page
 import * as c       from './utils/constants';
-import * as sample  from './utils/sampleJson';
+// import * as sample  from './utils/sampleJson';
+
+// Set of Styles specific to Home Page
 
 import './App.css';
 
 class App extends Component {
 
   state = {
+    // By default the tab is selected as per the  page url
     selectedTab : (window.location.href.indexOf(c.ROUTE_PAGE_URL) >0 ? c.ROUTE_PAGE_URL : c.STOP_PAGE_URL),
   }
 
@@ -30,33 +30,36 @@ class App extends Component {
     return (
       <Router>
 
+        {/* Navigation Bar at the top of the Page  */}
         <NavBar />
 
+        {/* Home Screen Image */}
         <div className='imageSection'></div>
 
-            <Grid
-              className='pageTabs'
-              container
-              direction="row"
-              justify="center"
-              alignItems="center"
-            >
-              <Link to={c.ROUTE_PAGE_URL}
-                    className={this.state.selectedTab === c.ROUTE_PAGE_URL ? 'active' : 'inactive'}
-                    onClick={() => this.state.selectedTab !== c.ROUTE_PAGE_URL &&  this.setState({ selectedTab: c.ROUTE_PAGE_URL })}
-              >
-                By Route 
+        {/* Navigation to different Pages of the Application */}
+        <Grid
+          className='pageTabs'
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+        >
+          {/* Link for Navigating to Search by Route Page */}
+          <Link to={c.ROUTE_PAGE_URL}
+                className={this.state.selectedTab === c.ROUTE_PAGE_URL ? 'active' : 'inactive'}
+                onClick={() => this.state.selectedTab !== c.ROUTE_PAGE_URL &&  this.setState({ selectedTab: c.ROUTE_PAGE_URL })}
+          >
+            Search By Route 
+          </Link>
 
-              </Link>
-
-              <Link to={c.STOP_PAGE_URL}
-                    className={this.state.selectedTab === c.STOP_PAGE_URL ? 'active' : 'inactive'} 
-                    onClick={() => this.state.selectedTab !== c.STOP_PAGE_URL && this.setState({ selectedTab: c.STOP_PAGE_URL }) }
-                    >
-              By Stop Id 
-              
-              </Link>
-              </Grid>
+          {/* Link for Navigating to Search by Stop Id Page */}
+          <Link to={c.STOP_PAGE_URL}
+                className={this.state.selectedTab === c.STOP_PAGE_URL ? 'active' : 'inactive'} 
+                onClick={() => this.state.selectedTab !== c.STOP_PAGE_URL && this.setState({ selectedTab: c.STOP_PAGE_URL }) }
+                >
+            Search By Stop Id 
+          </Link>
+        </Grid>
 
         {/*---- Routing the Navigation Links to different Pages according to the Path -----*/}
         <Switch>
@@ -69,7 +72,8 @@ class App extends Component {
           <Route path={c.STOP_PAGE_URL}
               component={DepartureByStop}
           />
-          {/*  Router for Home Page */}
+
+          {/*  Redirecting the home page router to Search By Route Page */}
           <Route render={() => <> <Redirect exact to={c.ROUTE_PAGE_URL} /> </>} />
         </Switch>
 

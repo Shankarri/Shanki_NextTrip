@@ -1,22 +1,27 @@
 
+// Dropdown Fields Text Labels
 export const HEADER_ROUTES      = 'Routes';
 export const HEADER_DIRECTIONS  = 'Directions';
 export const HEADER_STOPS       = 'Stops';
 
 
-export const ROUTE_PAGE_URL     = '/search-by-Route/';
+// Different Page URLs
+export const ROUTE_PAGE_URL     = '/search-by-route/';
 export const STOP_PAGE_URL      = '/search-by-stop/';
 
-
+// API Request route names
 export const API_URL_FOR_GET_ROUTES     = '/routes/';
 export const API_URL_FOR_GET_DIRECTIONS = '/directions/';
 export const API_URL_FOR_GET_STOPS      = '/stops/';
 
+// API Response Status 
 export const REQUEST_STATUS_INITIAL = 'intial';
 export const REQUEST_STATUS_LOADING = 'loading';
 export const REQUEST_STATUS_SUCCESS = 'success';
 export const REQUEST_STATUS_FAILED  = 'failed';
 
+
+/*--------- According to the dropdown selected, form the API URL and return it back ------------*/
 
 export const getAPIRequestURL =  (headerName, dropdownValue, state) =>
 {
@@ -44,14 +49,19 @@ export const getAPIRequestURL =  (headerName, dropdownValue, state) =>
     }
     else return '';
 }
+/*-----------------------------------------------------------------*/
 
+/*--------- Converting the time from API Reponse format to UI display format------------*/
 
 export const convertTimeForDisplay = (dateUTC) =>
 {
    return dateUTC.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}).split(':').join(' : ').toLowerCase();
 }
 
-/*---- Error Response for all the HTTP Request --- */
+/*-----------------------------------------------------------------*/
+
+
+/*-------------- Error Response for all the HTTP Request ----------------- */
 export const APIErrorResponse = (error, ReqDetails) => {
     // Error
     if (error.response) {
@@ -72,3 +82,5 @@ export const APIErrorResponse = (error, ReqDetails) => {
         console.log('Error', error.message);
     }
 }
+
+/*-----------------------------------------------------------------*/
