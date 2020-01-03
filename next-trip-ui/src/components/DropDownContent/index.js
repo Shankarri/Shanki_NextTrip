@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 
 // Importing HTML Elements from Material UI
-import { Grid,Select, InputLabel } from '@material-ui/core';
+import { Grid,Select, InputLabel, MenuItem } from '@material-ui/core';
 
 import * as c from '../../utils/constants';
 import './style.css';
@@ -25,8 +25,9 @@ class DropDownContent extends Component {
             justify="space-around"
             alignItems="stretch"
             className='dropdownSection'
-          >
+            >
                 <InputLabel id={"dropdown-header-"+ header}>{header}</InputLabel>
+
                 <Select
                     value={selectedValue}
                     variant="outlined"
@@ -35,20 +36,32 @@ class DropDownContent extends Component {
                     name={header}
                     onChange={handleDropDownChange}
                 >
-                    <option value='0' disabled>Select {header}</option>
+                    <MenuItem value='0' disabled>Select {header}</MenuItem>
+
                     {selectedDetails && selectedDetails.map((selectedDetail, index) =>
-                        header === c.DROP_DOWN_HEADER_ROUTES ?
-                            <option key={index} value={selectedDetail.RouteId}>
+
+                        header === c.HEADER_ROUTES ?
+
+                            <MenuItem key={index} value={selectedDetail.RouteId}>
+                            
                                 {selectedDetail.Description}
-                            </option>
-                            :header === c.DROP_DOWN_HEADER_DIRECTIONS ?
-                            <option key={index} value={selectedDetail.DirectionId}>
+                            
+                            </MenuItem>
+
+                            :header === c.HEADER_DIRECTIONS ?
+                            
+                            <MenuItem key={index} value={selectedDetail.DirectionId}>
+                            
                                 {selectedDetail.DirectionName}
-                            </option>
+                            
+                            </MenuItem>
+                            
                             :
-                            <option key={index} value={selectedDetail.PlaceCode}>
+                            <MenuItem key={index} value={selectedDetail.PlaceCode}>
+
                                 {selectedDetail.Description}
-                            </option>
+                                
+                            </MenuItem>
                             
                     )}
                 </Select>

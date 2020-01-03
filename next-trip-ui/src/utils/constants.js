@@ -1,7 +1,55 @@
 
-export const DROP_DOWN_HEADER_ROUTES = 'Routes';
-export const DROP_DOWN_HEADER_DIRECTIONS = 'Directions';
-export const DROP_DOWN_HEADER_STOPS = 'Stops';
+export const HEADER_ROUTES      = 'Routes';
+export const HEADER_DIRECTIONS  = 'Directions';
+export const HEADER_STOPS       = 'Stops';
+
+
+export const ROUTE_PAGE_URL     = '/search-by-Route/';
+export const STOP_PAGE_URL      = '/search-by-stop/';
+
+
+export const API_URL_FOR_GET_ROUTES     = '/routes/';
+export const API_URL_FOR_GET_DIRECTIONS = '/directions/';
+export const API_URL_FOR_GET_STOPS      = '/stops/';
+
+export const REQUEST_STATUS_INITIAL = 'intial';
+export const REQUEST_STATUS_LOADING = 'loading';
+export const REQUEST_STATUS_SUCCESS = 'success';
+export const REQUEST_STATUS_FAILED  = 'failed';
+
+
+export const getAPIRequestURL =  (headerName, dropdownValue, state) =>
+{
+    if (headerName === '') {
+        // url = /routes/
+        return API_URL_FOR_GET_ROUTES;
+    }
+
+    else if (headerName === HEADER_ROUTES)
+    { 
+        // url =  /directions/{ROUTE}
+        return API_URL_FOR_GET_DIRECTIONS + dropdownValue;
+    }
+
+    else if (headerName === HEADER_DIRECTIONS)
+    { 
+        // url =  /directions/{ROUTE}/{DIRECTION}
+        return API_URL_FOR_GET_STOPS  + state.selectedRoute + '/' + dropdownValue;
+    }
+    
+    else if (headerName === HEADER_STOPS)
+    {
+        //url =  /{ROUTE}/{DIRECTION}/{STOP}
+        return '/'+state.selectedRoute+ '/'  + state.selectedDirection + '/' + dropdownValue;
+    }
+    else return '';
+}
+
+
+export const convertTimeForDisplay = (dateUTC) =>
+{
+   return dateUTC.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}).split(':').join(' : ').toLowerCase();
+}
 
 /*---- Error Response for all the HTTP Request --- */
 export const APIErrorResponse = (error, ReqDetails) => {

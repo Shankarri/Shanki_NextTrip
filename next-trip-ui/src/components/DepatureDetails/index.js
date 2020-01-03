@@ -3,10 +3,9 @@ import React, { Component } from 'react';
 
 // Importing HTML Elements from Material UI
 import { 
-        Grid, Button,
+        Grid, 
         Card, CardHeader, CardContent,
-        Icon, Chip, Avatar,
-        Typography
+        Icon, Chip, Avatar,Button,
 } from '@material-ui/core';
 
 import * as c from '../../utils/constants';
@@ -17,6 +16,7 @@ class DepartureDetails extends Component {
     state={
         showMore : false,
     }
+
     render() {
 
         let { Stop,Departures } = this.props.departuresDetails;
@@ -24,9 +24,6 @@ class DepartureDetails extends Component {
         let { showMore } = this.state;
 
         return (
-            <Card raised={true} className='departureCard'>
-                <CardHeader title='Departures' align='center'/>
-
                 <CardContent>
                     <Grid container
                         direction="row"
@@ -38,14 +35,14 @@ class DepartureDetails extends Component {
                         <Chip variant="outlined"
                                 color="primary" 
                                 avatar={<Avatar> <Icon >watch_later</Icon> </Avatar>}
-                                label={<h3>{new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}).split(':').join(' : ')}</h3>} 
+                                label={<h3>{c.convertTimeForDisplay(new Date())}</h3>} 
                         />
                     
                     </Grid>
                     {Departures && Departures.length > 0 ?
                         (Departures.map((departure,index) =>
                         ((!showMore && index <3) || showMore) &&
-                        <Card className='departureDetailsCard'>
+                        <Card className='departureDetailsCard' key={index}>
                                 <CardContent>
                                     <Grid container
                                         direction="row"
@@ -55,7 +52,16 @@ class DepartureDetails extends Component {
                                             <b>{departure.RouteId}{departure.Terminal}</b> {departure.Description}
                                         </Grid>
                                         <Grid item xs={2} align='right'>
+                                        
+                                        {departure.Actual && departure.Actual === true ?
+                                        
+                                        <>
+                                            <Icon className='wifiSignal' color='primary'>rss_feed</Icon>
                                             <b>{departure.DepartureText}</b>
+                                        </>
+                                        :
+                                        <b>{c.convertTimeForDisplay(new Date(departure.DepartureTime))}</b>
+                                        }
                                         </Grid>
                                     </Grid>
                                 </CardContent>
@@ -70,9 +76,9 @@ class DepartureDetails extends Component {
                     }
                     <Grid container
                         direction="row"
-                        justify="flex-start"
-                        alignItems="stretch">
-                        <Grid item>
+                        justify="center"
+                        alignItems="center">
+                        <Grid item xs={8}>
                             {Departures.length >3 && 
                                 (showMore ?
                                 <Button variant="outlined" onClick={() => this.setState({ showMore: !showMore })}>
@@ -87,10 +93,15 @@ class DepartureDetails extends Component {
                                 )
                             }
                         </Grid>
+                        <Grid item xs={4}>
+                            <h5 align='right'>
+                                <Icon className='wifiSignal' color='primary'>rss_feed</Icon> 
+                                Real-time departures
+                            </h5>
+                        </Grid>
                     </Grid>
+                    
                 </CardContent>
-               
-            </Card>
         );
     }
 }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 // Importing HTML Elements from Material UI
 import {
-  Grid, Chip,Icon,
+  Grid, Hidden,
   AppBar, Toolbar,
   Typography, Avatar, Container,
 } from '@material-ui/core';
@@ -42,19 +42,21 @@ class NavBar extends Component {
 
                 {/* App Title shown in the Middle of the Top Nav Bar */}
 
-                <Grid item xs={6} align='center' >
+                <Grid item xs={7} align='center' >
 
                   <Typography variant="h4" noWrap className='pageTitle'> NextTrip </Typography>
 
                 </Grid>
 
                 {/* Navigation Links displayed in the  Top Nav Bar*/}
-                <Grid item xs={4}>
-
+                <Hidden smDown>
+                <Grid item xs={2}>
+                
                   <Typography noWrap align='right' variant='h6'> Welcome !
                     </Typography>
+                
                 </Grid>
-
+                </Hidden>
               </Grid>
             </Container>
           </Toolbar>

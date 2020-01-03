@@ -4,14 +4,62 @@
 
 .imageSection
 {
-  background-image: url('./images/bus_1.png') !important;
-  height:20vh;
+  background-image: url('./images/bus_5.jpg') !important;
+  height:30vh;
   background-size: cover;
-  background-position: 90%;
+  background-position: center;
   background-repeat: no-repeat;
 }
 
 .mainContent
 {
   padding-bottom: 2rem;
+  box-shadow: lightgrey;
 }
+
+/* Css for File Result Section with Tabs */
+.pageTabs
+{
+ position: sticky;
+ border-radius: 5px;
+ padding-top: 2rem;
+}
+
+
+.pageTabs .active
+{
+    /* color: BLA; */
+    cursor: pointer;
+    margin: 0;
+    color: white;
+    background-color: #0061aa;
+}
+
+.pageTabs .inactive
+{
+    /* color: BLA; */
+    cursor: pointer;
+    margin: 0;
+    color: black;
+    background-color: lightgray;
+}
+.pageTabs .inactive:hover
+{
+    border: 1px solid grey;
+    font-weight: bold;
+    color: #0061aa;
+}
+
+.pageTabs a
+{
+    border-radius: 5px;
+    padding:1rem 2rem;
+    margin: 0rem 1rem !important;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none !important;
+}
+
+
+
+/* -------------------------- */
